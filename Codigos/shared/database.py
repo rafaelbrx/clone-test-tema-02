@@ -1,3 +1,4 @@
+import os
 import firebase_admin
 from firebase_admin import credentials, firestore
 
@@ -13,7 +14,11 @@ class Database:
             print("⚙️ Inicializando conexão com o Firebase...")
             cls._instance = super(Database, cls).__new__(cls)
             
-            cred = credentials.Certificate("firebase-adminsdk.json")
+            path = "firebase-adminsdk.json"
+            if not os.path.exists(path):
+                path = "../firebase-adminsdk.json"
+                
+            cred = credentials.Certificate(path)
             firebase_admin.initialize_app(cred)
             
             cls._instance.db = firestore.client()
