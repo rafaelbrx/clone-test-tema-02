@@ -33,8 +33,7 @@ def _publicar_no_mqtt(topico, dados):
         
         payload = json.dumps(dados)
         
-        mensagem_info = client.publish(topico, payload)
-        
+        mensagem_info = client.publish(topico, payload, qos=1) 
         mensagem_info.wait_for_publish()
         
         client.disconnect()
