@@ -1,6 +1,7 @@
 import os
 import ssl
 import threading
+import random
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import paho.mqtt.client as mqtt
 from paho.mqtt.enums import CallbackAPIVersion
@@ -30,6 +31,10 @@ class DummyHandler(BaseHTTPRequestHandler):
         self.send_header('Content-type', 'text/plain')
         self.end_headers()
         self.wfile.write(b"Worker do Pokemon operando normalmente!")
+        
+    def do_HEAD(self):
+        self.send_response(200)
+        self.end_headers()
 
 def iniciar_servidor_fake():
     porta = int(os.getenv("PORT", 8080))
@@ -61,7 +66,9 @@ def iniciar_worker():
     broker_user = os.getenv("HIVEMQ_USER")
     broker_pass = os.getenv("HIVEMQ_PASSWORD")
 
-    client = mqtt.Client(CallbackAPIVersion.VERSION2, client_id="Pokemon_Worker_01")
+    meu_id_unico = f"Pokemon_Worker_{random.randint(1000, 9999)}"
+    client = mqtt.Client(CallbackAPIVersion.VERSION2, client_id=meu_id_unico)
+    
     client.tls_set(tls_version=ssl.PROTOCOL_TLS)
     client.username_pw_set(broker_user, broker_pass)
     client.on_connect = on_connect
