@@ -47,6 +47,9 @@ def on_connect(client, userdata, flags, reason_code, properties):
 def on_message(client, userdata, msg):
     topico = msg.topic
     payload = msg.payload.decode('utf-8')
+
+    print(f"📥 [RADAR] Mensagem recebida! Tópico: {topico} | Payload: {payload}")
+    
     if topico == TOPICO_NOVO_JOGADOR:
         dist_controller.on_jogador_criado(payload)
     elif topico == TOPICO_TROCA:
