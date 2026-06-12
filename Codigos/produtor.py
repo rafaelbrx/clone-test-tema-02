@@ -3,6 +3,7 @@ import ssl
 import json
 import time
 import random
+from xmlrpc import client
 import paho.mqtt.client as mqtt
 from paho.mqtt.enums import CallbackAPIVersion
 from dotenv import load_dotenv
@@ -28,11 +29,17 @@ def _publicar_no_mqtt(topico, dados):
     try:
         client.connect(broker_url, broker_port, 60)
         
-        payload = json.dumps(dados)
-        client.publish(topico, payload)
+        client.loop_start()
         
-        time.sleep(1.5)
+        payload = json.dumps(dados)
+        
+        mensagem_info = client.publish(topico, payload)
+        
+        mensagem_info.wait_for_publish()
+        
         client.disconnect()
+        client.loop_stop()
+        
     except Exception as e:
         print(f"❌ Erro MQTT: Não foi possível publicar no tópico {topico}. Erro: {e}")
 
