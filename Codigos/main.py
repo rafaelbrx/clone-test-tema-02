@@ -9,7 +9,7 @@ from DeckService.repository import CartasRepository
 from DeckService.services import CartasService
 from DeckService.controllers.api import router as deck_router, CartasApiController
 
-from produtor import simular_criacao_jogador, simular_troca
+from produtor import criar_jogador, simular_troca
 
 cartas_repo = CartasRepository()
 deck_service = CartasService(cartas_repo)
@@ -39,7 +39,7 @@ class TrocaPayload(BaseModel):
 
 @app.post("/jogador", tags=["Eventos MQTT"])
 def endpoint_criar_jogador(payload: NovoJogadorPayload):
-    simular_criacao_jogador(payload.id_jogador)
+    criar_jogador(payload.id_jogador)
     return {"status": "success", "message": f"Evento de criação do jogador {payload.id_jogador} enviado ao broker!"}
 
 @app.post("/trocas", tags=["Eventos MQTT"])
