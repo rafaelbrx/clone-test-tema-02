@@ -307,7 +307,7 @@
     setMsg('msg-troca','loading','> PROCESSANDO TROCA...');
 
     try {
-      const resAntes = await fetch(`${API_BASE}/cartas/${idOrigem}`);
+      const resAntes = await fetch(`${API_BASE}/cartas/${idOrigem}`, { cache: 'no-store' });
       const cartasAntes = await resAntes.json();
 
       const res = await fetch(`${API_BASE}/trocas`, {
@@ -319,8 +319,11 @@
 
       await new Promise(resolve => setTimeout(resolve, 7000));
 
-      const resDepois = await fetch(`${API_BASE}/cartas/${idOrigem}`);
+      const resDepois = await fetch(`${API_BASE}/cartas/${idOrigem}`, { cache: 'no-store' });
       const cartasDepois = await resDepois.json();
+
+      console.log("Deck Antes: ", cartasAntes);
+      console.log("Deck Depois:", cartasDepois);
 
       if (JSON.stringify(cartasAntes) !== JSON.stringify(cartasDepois)) {
         setMsg('msg-troca','success','> TROCA VALIDADA E CONCLUIDA!');
@@ -333,7 +336,7 @@
     } catch(e) {
       setMsg('msg-troca','error','> ERRO AO CONECTAR COM O SERVIDOR');
     }
-  }
+}
 </script>
 </body>
 </html>
