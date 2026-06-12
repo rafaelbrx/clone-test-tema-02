@@ -12,10 +12,6 @@ class CartasApiController:
     def _setup_routes(self):
         @router.get("/{id_jogador}", response_model=List[int])
         def consultar_cartas(id_jogador: int) -> List[int]:
-            """
-            Endpoint: GET /[id_jogador]
-            Retorna a lista de Pokémons atribuídos a um jogador.
-            """
             try:
                 cartas = self.service.consultarCartas(id_jogador)
                 return cartas
