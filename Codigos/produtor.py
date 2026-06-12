@@ -52,10 +52,10 @@ def simular_troca(origem: int, destino: int, enviados: list, recebidos: list):
     print(f"🔄 API solicitou troca: Jogador {origem} envia para {destino}")
     
     dados = {
-        "jogador_origem": origem,
-        "jogador_destino": destino,
-        "cartas_enviadas": enviados,
-        "cartas_recebidas": recebidos
+        "idJogadorOrigem": origem,
+        "idJogadorDestino": destino,
+        "idsPokemonsEnviados": enviados,
+        "idsPokemonsRecebidos": recebidos
     }
     
     _publicar_no_mqtt(TOPICO_TROCA, dados)
