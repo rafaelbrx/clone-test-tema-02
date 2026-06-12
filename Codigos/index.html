@@ -254,8 +254,6 @@
 </div>
 
 <script>
-  const API_BASE = 'http://localhost:8000';
-
   function selectPanel(name) {
     ['idle','consultar','troca'].forEach(p => document.getElementById('panel-'+p).classList.remove('active'));
     document.getElementById('panel-'+name).classList.add('active');
@@ -280,7 +278,7 @@
     renderChips([]);
     setMsg('msg-consultar','loading','> BUSCANDO...');
     try {
-      const res = await fetch(`${API_BASE}/cartas/${id}`);
+      const res = await fetch(`/cartas/${id}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       renderChips(data);
@@ -307,10 +305,10 @@
     setMsg('msg-troca','loading','> PROCESSANDO TROCA...');
 
     try {
-      const resAntes = await fetch(`${API_BASE}/cartas/${idOrigem}`);
+      const resAntes = await fetch(`/cartas/${idOrigem}`);
       const cartasAntes = await resAntes.json();
 
-      const res = await fetch(`${API_BASE}/trocas`, {
+      const res = await fetch(`/trocas`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idJogadorOrigem: idOrigem, idJogadorDestino: idDestino, idsPokemonsEnviados: enviados, idsPokemonsRecebidos: recebidos })
@@ -319,7 +317,7 @@
 
       await new Promise(resolve => setTimeout(resolve, 1500));
 
-      const resDepois = await fetch(`${API_BASE}/cartas/${idOrigem}`);
+      const resDepois = await fetch(`/cartas/${idOrigem}`);
       const cartasDepois = await resDepois.json();
 
       if (JSON.stringify(cartasAntes) !== JSON.stringify(cartasDepois)) {
