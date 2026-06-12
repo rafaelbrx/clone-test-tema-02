@@ -1,6 +1,7 @@
 import os
 import ssl
 import json
+import time
 import paho.mqtt.client as mqtt
 from paho.mqtt.enums import CallbackAPIVersion
 from dotenv import load_dotenv
@@ -30,6 +31,8 @@ def criar_jogador():
         
         client.publish(TOPICO_NOVO_JOGADOR, payload)
         print(f"✅ SUCESSO! Evento de criação do jogador {id_jogador} disparado para a nuvem!")
+        
+        time.sleep(2)
         
         client.disconnect()
     except Exception as e:
