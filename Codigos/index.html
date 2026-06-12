@@ -317,7 +317,7 @@
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 7000));
 
       const resDepois = await fetch(`${API_BASE}/cartas/${idOrigem}`);
       const cartasDepois = await resDepois.json();

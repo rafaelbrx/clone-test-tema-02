@@ -18,6 +18,12 @@ class ValidarQuantidade(TrocaValidacao):
             return False, "A troca exige quantias iguais de Pokémons de ambos os lados."
         return True, ""
 
+class ValidarJogadoresDistintos(TrocaValidacao):
+    def validar(self, dados_troca: TrocaEntity, repo: InterfaceCartasRepository) -> tuple[bool, str]:
+        if dados_troca.idJogadorOrigem == dados_troca.idJogadorDestino:
+            return False, "Troca rejeitada: Um jogador não pode trocar cartas consigo mesmo."
+        return True, ""
+
 class ValidarExistenciaJogadores(TrocaValidacao):
     def validar(self, dados_troca: TrocaEntity, repo: InterfaceCartasRepository) -> tuple[bool, str]:
         if not repo.validarJogador(dados_troca.idJogadorOrigem):
@@ -66,6 +72,7 @@ class CartasService(InterfaceCartasService):
         self.repository = repository
         
         self.validacoes_troca: List[TrocaValidacao] = [
+            ValidarJogadoresDistintos(),
             ValidarQuantidade(),
             ValidarExistenciaJogadores(),
             ValidarPosseCartas(),
