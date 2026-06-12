@@ -54,3 +54,29 @@ def simular_troca(origem: int, destino: int, enviados: list, recebidos: list):
     
     _publicar_no_mqtt(TOPICO_TROCA, dados)
     print(f"✅ SUCESSO! Evento de troca disparado!")
+
+if __name__ == "__main__":
+    print("🛠️ --- MODO DE TESTE MANUAL DO PRODUTOR --- 🛠️")
+    print("1 - Forçar criação de Novo Jogador")
+    print("2 - Forçar Simulação de Troca")
+    
+    escolha = input("\nEscolha o teste que deseja forçar (1 ou 2): ")
+    
+    if escolha == "1":
+        id_jog = input("Digite o ID do jogador: ")
+        criar_jogador(int(id_jog))
+        
+    elif escolha == "2":
+        origem = int(input("ID do Jogador Origem: "))
+        destino = int(input("ID do Jogador Destino: "))
+        
+        env_input = input("IDs das cartas enviadas (ex: 1,2,3): ")
+        rec_input = input("IDs das cartas recebidas (ex: 4,5): ")
+        
+        enviadas = [int(x.strip()) for x in env_input.split(',') if x.strip()]
+        recebidas = [int(x.strip()) for x in rec_input.split(',') if x.strip()]
+        
+        simular_troca(origem, destino, enviadas, recebidas)
+        
+    else:
+        print("❌ Opção inválida.")
