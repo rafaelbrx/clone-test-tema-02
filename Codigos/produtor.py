@@ -27,7 +27,8 @@ def criar_jogador():
     try:
         print("🌐 Conectando à nuvem...")
         client.connect(broker_url, broker_port, 60)
-        payload = id_jogador 
+        dados = {"jogador_id": int(id_jogador)} 
+        payload = json.dumps(dados)
         
         client.publish(TOPICO_NOVO_JOGADOR, payload)
         print(f"✅ SUCESSO! Evento de criação do jogador {id_jogador} disparado para a nuvem!")
