@@ -14,9 +14,11 @@ class Database:
             print("⚙️ Inicializando conexão com o Firebase...")
             cls._instance = super(Database, cls).__new__(cls)
             
-            path = "firebase-adminsdk.json"
+            diretorio = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            path = os.path.join(diretorio, "firebase-adminsdk.json")
+            
             if not os.path.exists(path):
-                path = "../firebase-adminsdk.json"
+                raise FileNotFoundError(f"❌ CRÍTICO: Arquivo do Firebase não encontrado em: {path}")
                 
             cred = credentials.Certificate(path)
             firebase_admin.initialize_app(cred)
