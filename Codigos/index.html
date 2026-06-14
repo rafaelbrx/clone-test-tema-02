@@ -409,33 +409,44 @@
     if (!id) { setMsg('msg-novo-jogador', 'error', '> INFORME UM ID'); return; }
 
     renderChips('nj-chips', []);
-    setMsg('msg-novo-jogador', 'loading', '> REGISTRANDO JOGADOR...');
+    setMsg('msg-novo-jogador', 'loading', '> VERIFICANDO REGISTROS...');
 
     try {
+      const resAntes = await fetch(`${API_BASE}/cartas/${id}`, { cache: 'no-store' });
+      const cartasAntes = await resAntes.json();
+
+      //if (cartasAntes && cartasAntes.length > 0) {
+        //setMsg('msg-novo-jogador', 'error', '> JOGADOR JA CADASTRADO!');
+        //renderChips('nj-chips', cartasAntes);
+        //return; 
+      //}
+
+      setMsg('msg-novo-jogador', 'loading', '> REGISTRANDO JOGADOR...');
       const res = await fetch(`${API_BASE}/jogador`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id_jogador: parseInt(id) })
       });
 
-      if (res.status === 409) {
-        setMsg('msg-novo-jogador', 'error', '> JOGADOR JA CADASTRADO!');
-        return;
-      }
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-      setMsg('msg-novo-jogador', 'loading', '> AGUARDANDO SORTEIO MQTT...');
+      setMsg('msg-novo-jogador', 'loading', '> AGUARDANDO SORTEIO...');
       await new Promise(resolve => setTimeout(resolve, 7000));
 
       const resCartas = await fetch(`${API_BASE}/cartas/${id}`, { cache: 'no-store' });
       const ids = await resCartas.json();
 
-      renderChips('nj-chips', ids);
-      setMsg('msg-novo-jogador', 'success', `> DECK CRIADO! ${ids.length} CARTA(S) SORTEADA(S)`);
+      if (ids && ids.length > 0) {
+        renderChips('nj-chips', ids);
+        setMsg('msg-novo-jogador', 'success', `> DECK CRIADO! ${ids.length} CARTA(S) SORTEADA(S)`);
+      } else {
+        setMsg('msg-novo-jogador', 'error', '> ERRO: JOGADOR JÁ REGISTRADO');
+      }
+
     } catch (e) {
       setMsg('msg-novo-jogador', 'error', '> ERRO AO CONECTAR COM O SERVIDOR');
     }
-  }
+}
 </script>
 </body>
 </html>
