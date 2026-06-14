@@ -12,11 +12,13 @@ from DeckService.services import CartasService
 from DeckService.controllers.consumer import CartasConsumerController
 from DistribuicaoService.services import DistribuicaoService
 from DistribuicaoService.controllers import DistribuicaoController
+from DistribuicaoService.pokeapi_client import PokeApiClient
 
 load_dotenv()
 
 print("⚙️ Inicializando os microsserviços...")
 cartas_repo = CartasRepository()
+sorteador = PokeApiClient()
 deck_service = CartasService(cartas_repo)
 distribuicao_service = DistribuicaoService(cartas_repo)
 deck_controller = CartasConsumerController(deck_service)

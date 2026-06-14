@@ -1,11 +1,10 @@
-from .interface import InterfaceDistribuicaoService
-from .pokeapi_client import PokeApiClient
+from .interface import InterfaceDistribuicaoService, InterfaceSorteadorPokemons
 
 from DeckService.interface import InterfaceCartasRepository
 
 class DistribuicaoService(InterfaceDistribuicaoService):
-    def __init__(self, cartas_repository: InterfaceCartasRepository):
-        self.poke_api = PokeApiClient()
+    def __init__(self, cartas_repository: InterfaceCartasRepository, poke_api: InterfaceSorteadorPokemons):
+        self.poke_api = poke_api
         self.cartas_repository = cartas_repository
 
     def distribuirCartas(self, idJogador: int) -> None:

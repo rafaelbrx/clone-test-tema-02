@@ -1,8 +1,13 @@
 import random
 import requests
 from typing import List
+from .interface import InterfaceSorteadorPokemons
 
-class PokeApiClient:
+# ==========================================
+#       PADRÃO ESTRUTURAL: ADAPTER
+# ==========================================
+
+class PokeApiClient(InterfaceSorteadorPokemons):
     def __init__(self):
         self.species_url = "https://pokeapi.co/api/v2/pokemon-species"
 

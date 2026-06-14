@@ -1,16 +1,13 @@
 import os
 import ssl
 import json
-import time
 import random
-from xmlrpc import client
 import paho.mqtt.client as mqtt
 from paho.mqtt.enums import CallbackAPIVersion
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# Configurações do HiveMQ Cloud
 broker_url = os.getenv("HIVEMQ_HOST")
 broker_port = int(os.getenv("HIVEMQ_PORT", 8883))
 broker_user = os.getenv("HIVEMQ_USER")
@@ -63,10 +60,10 @@ def simular_troca(origem: int, destino: int, enviados: list, recebidos: list):
 
 if __name__ == "__main__":
     print("🛠️ --- MODO DE TESTE MANUAL DO PRODUTOR --- 🛠️")
-    print("1 - Forçar criação de Novo Jogador")
-    print("2 - Forçar Simulação de Troca")
+    print("1 - Criar novo jogador")
+    print("2 - Efetuar troca")
     
-    escolha = input("\nEscolha o teste que deseja forçar (1 ou 2): ")
+    escolha = input("\nEscolha o teste que deseja (1 ou 2): ")
     
     if escolha == "1":
         id_jog = input("Digite o ID do jogador: ")
@@ -76,7 +73,7 @@ if __name__ == "__main__":
         origem = int(input("ID do Jogador Origem: "))
         destino = int(input("ID do Jogador Destino: "))
         
-        env_input = input("IDs das cartas enviadas (ex: 1,2,3): ")
+        env_input = input("IDs das cartas enviadas (ex: 1,2): ")
         rec_input = input("IDs das cartas recebidas (ex: 4,5): ")
         
         enviadas = [int(x.strip()) for x in env_input.split(',') if x.strip()]
