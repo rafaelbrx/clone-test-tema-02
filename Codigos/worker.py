@@ -13,14 +13,18 @@ from DeckService.controllers.consumer import CartasConsumerController
 from DistribuicaoService.services import DistribuicaoService
 from DistribuicaoService.controllers import DistribuicaoController
 from DistribuicaoService.pokeapi_client import PokeApiClient
+from DistribuicaoService.proxy import PokeApiSmartProxy
 
 load_dotenv()
 
 print("⚙️ Inicializando os microsserviços...")
 cartas_repo = CartasRepository()
-sorteador = PokeApiClient()
+sorteador_adapter = PokeApiClient()
+sorteador_proxy = PokeApiSmartProxy(sorteador_adapter)
+
 deck_service = CartasService(cartas_repo)
-distribuicao_service = DistribuicaoService(cartas_repo, sorteador)
+distribuicao_service = DistribuicaoService(cartas_repo, sorteador_proxy)
+
 deck_controller = CartasConsumerController(deck_service)
 dist_controller = DistribuicaoController(distribuicao_service)
 
