@@ -13,7 +13,7 @@ class PokeApiSmartProxy(InterfaceSorteadorPokemons):
         self._pokeapi_adapter = pokeapi_adapter
         self._cache_total_pokemons = None
         self._ultima_atualizacao = 0
-        self._TEMPO_EXPIRACAO_CACHE = 86400
+        self._TEMPO_EXPIRACAO_CACHE = 86400 # 24 horas
         self._FALLBACK = 1025 
 
     def sortear_ids_iniciais(self, quantidade: int = 5) -> List[int]:
@@ -21,16 +21,15 @@ class PokeApiSmartProxy(InterfaceSorteadorPokemons):
         
         if self._cache_total_pokemons and (agora - self._ultima_atualizacao) < self._TEMPO_EXPIRACAO_CACHE:
             print(f"⚡ [Proxy] Usando Cache: {self._cache_total_pokemons} Pokémons disponíveis.")
-            total_pokemons = self._cache_total_pokemons
+            total = self._cache_total_pokemons 
             
         else:
             print("🌐 [Proxy] Cache expirado/vazio. Tentando acessar a PokéAPI...")
             try:
                 total = self._pokeapi_adapter.obter_quantidade_total_pokemons()
                 
-                self._cache_total_pokemons = total_pokemons
+                self._cache_total_pokemons = total
                 self._ultima_atualizacao = agora
-                total = total_pokemons
                 print("✅ [Proxy] Rede acessada com sucesso. Cache atualizado.")
                 
             except Exception as e:

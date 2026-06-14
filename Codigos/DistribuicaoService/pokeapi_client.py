@@ -11,10 +11,8 @@ class PokeApiClient(InterfaceSorteadorPokemons):
     def __init__(self):
         self.species_url = "https://pokeapi.co/api/v2/pokemon-species"
 
-    # ==========================================
-    #       PADRÃO ESTRUTURAL: PROXY
-    # ==========================================
     def obter_quantidade_total_pokemons(self) -> int:
+        # PROXY
         response = requests.get(f"{self.species_url}?limit=1", timeout=5)
         response.raise_for_status() 
         
