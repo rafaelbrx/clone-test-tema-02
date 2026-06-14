@@ -415,11 +415,11 @@
       const resAntes = await fetch(`${API_BASE}/cartas/${id}`, { cache: 'no-store' });
       const cartasAntes = await resAntes.json();
 
-      //if (cartasAntes && cartasAntes.length > 0) {
-        //setMsg('msg-novo-jogador', 'error', '> JOGADOR JA CADASTRADO!');
-        //renderChips('nj-chips', cartasAntes);
-        //return; 
-      //}
+      if (cartasAntes && cartasAntes.length > 0) {
+        setMsg('msg-novo-jogador', 'error', '> JOGADOR JA CADASTRADO!');
+        renderChips('nj-chips', cartasAntes);
+        return; 
+      }
 
       setMsg('msg-novo-jogador', 'loading', '> REGISTRANDO JOGADOR...');
       const res = await fetch(`${API_BASE}/jogador`, {
@@ -440,7 +440,7 @@
         renderChips('nj-chips', ids);
         setMsg('msg-novo-jogador', 'success', `> DECK CRIADO! ${ids.length} CARTA(S) SORTEADA(S)`);
       } else {
-        setMsg('msg-novo-jogador', 'error', '> ERRO: JOGADOR JÁ REGISTRADO');
+        setMsg('msg-novo-jogador', 'error', '> ERRO: REJEITADO PELO WORKER (Veja o Terminal)');
       }
 
     } catch (e) {
