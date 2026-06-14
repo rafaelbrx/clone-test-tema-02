@@ -3,7 +3,7 @@
 Aplicação responsável por gerenciar a distribuição de Pokémons para jogadores recém cadastrados, utilizando dados da **PokéAPI**.
 ###### Feito por Fernando Puebla Stein, Mauro Iwama, Rafael Braga Santos e Ramirez Wallace Villela Santos da Silva
 
-<img width="2816" height="1536" alt="Gemini_Generated_Image_q9p8ivq9p8ivq9p8" src="https://github.com/user-attachments/assets/1c07e9c4-eda8-4c2b-bc31-94c216957366" />
+<img width="2816" height="1536" alt="Gemini_Generated_Image_q9p8ivq9p8ivq9p8" src="[https://github.com/user-attachments/assets/1c07e9c4-eda8-4c2b-bc31-94c216957366](https://github.com/user-attachments/assets/1c07e9c4-eda8-4c2b-bc31-94c216957366)" />
 
 ---
 
@@ -19,7 +19,8 @@ Os dados são obtidos dinamicamente da PokéAPI e armazenados para permitir cons
 
 - 🎲 Geração aleatória de Pokémons via PokéAPI  
 - 🧩 Distribuição automática de 5 Pokémons por jogador  
-- 🚫 Garantia de **não repetição de Pokémons por jogador** - 🔁 Permite repetição de Pokémons entre jogadores diferentes  
+- 🚫 Garantia de **não repetição de Pokémons por jogador**
+- 🔁 Permite repetição de Pokémons entre jogadores diferentes  
 - 📡 Disponibilização de dados para consulta externa (API)
 
 ---
@@ -55,7 +56,9 @@ A comunicação utiliza o padrão de **Arquitetura Orientada a Eventos**.
    ```
 4. Adicione o arquivo de chave privada do banco de dados (`firebase-adminsdk.json`) na raiz do projeto.
 
-### Inicialização
+---
+
+### 💻 Execução Local (Desenvolvimento)
 Como a arquitetura divide a recepção e o processamento, é necessário rodar dois terminais em paralelo:
 
 **Terminal 1: O Processador de Eventos (Worker)**
@@ -74,8 +77,21 @@ Com ambos rodando, acesse a interface visual através do seu navegador em: **`ht
 
 ---
 
+### 🌍 Como Testar em Nuvem (Produção)
+A aplicação está hospedada e orquestrada na nuvem do Render. Devido às restrições do plano gratuito, as máquinas virtuais podem entrar em modo de suspensão após 15 minutos sem acessos.
+
+Para testar a arquitetura completa com sucesso, siga este passo a passo para garantir que os dois microsserviços estejam "acordados" e prontos para trocar mensagens:
+
+1. **Desperte o Worker (Consumidor):** Acesse a [do Worker](https://clone-test-tema-02.onrender.com). Ao carregar a tela com a mensagem de confirmação, o servidor ligará os motores e se conectará à rede MQTT. Pode fechar a aba em seguida.
+2. **Acesse o Sistema (API/Frontend):** Entre na [Interface Principal](https://pokemon-card-dealer.onrender.com).
+3. **Gerando Jogadores:** Utilize o terminal local (script `produtor.py`) ou as rotas da API para registrar novos jogadores, acionando a busca na PokéAPI em segundo plano.
+4. **Efetivando Trocas:** Na interface web, informe os IDs de origem e destino e as cartas a serem trocadas. Ao clicar em confirmar, a API enviará a ordem via MQTT.
+5. **Validação Assíncrona:** A tela apresentará status de carregamento por cerca de 7 segundos. Esse é o tempo exato para o pacote viajar até a Europa (HiveMQ), descer para o Worker, passar pelas validações do *Strategy Pattern*, consultar os XPs base na PokéAPI e atualizar o Firebase antes de retornar o resultado para a tela.
+
+---
+
 ## 🔗 Integração
 
 A aplicação utiliza a API pública:
 
-- 🌐 https://pokeapi.co/
+- 🌐 [https://pokeapi.co/](https://pokeapi.co/)
